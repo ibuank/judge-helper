@@ -110,6 +110,7 @@
   </select>
 
   <button onclick="judge()">判定する</button>
+  <button onclick="shareResult()">結果をシェアする</button>
   <!-- ローディング -->
 <div id="loading" style="display:none; text-align:center; margin-top:16px;">
   <div class="spinner"></div>
@@ -190,6 +191,24 @@ function judge() {
     }
 
   }, 400);
+}
+
+  function shareResult() {
+  const result = document.getElementById("result").textContent;
+
+  if (!result) {
+    alert("先に判定してね！");
+    return;
+  }
+
+  const text = "【診断結果】\n" + result + "\n\nあなたも試してみて👇";
+  const url = window.location.href;
+
+  const shareUrl = "https://twitter.com/intent/tweet?text=" 
+    + encodeURIComponent(text) 
+    + "&url=" + encodeURIComponent(url);
+
+  window.open(shareUrl, "_blank");
 }
 </script>
 
