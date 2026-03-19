@@ -134,15 +134,15 @@ function judge() {
   const result = document.getElementById("result");
 
   if (!duty || !feeling || !risk || !energy) {
-  result.textContent = "全部選んでね。";
-  result.style.background = "#ffe0e0"; // 赤っぽく
-  return;
-}
+    result.textContent = "全部選んでね。";
+    result.style.background = "#ffe0e0";
+    return;
+  }
 
   // 表示リセット
-result.textContent = "";
-result.style.background = "#eef"; 
-loading.style.display = "block";
+  result.textContent = "";
+  result.style.background = "#eef";
+  loading.style.display = "block";
 
   setTimeout(() => {
     let score = 0;
@@ -154,18 +154,38 @@ loading.style.display = "block";
     if (energy === "high") score += 1;
     if (energy === "low") score -= 2;
 
+    // 👇 理由ロジック
+    let reasons = [];
+
+    if (score >= 3) {
+      if (duty === "yes") reasons.push("義務がある");
+      if (feeling === "want") reasons.push("やりたい気持ちがある");
+      if (risk === "high") reasons.push("断ると影響がある");
+      if (energy === "high") reasons.push("余裕がある");
+
+    } else if (score <= -2) {
+      if (feeling === "dont") reasons.push("気が乗らない");
+      if (energy === "low") reasons.push("今は余裕がない");
+      if (risk === "low") reasons.push("断っても問題ない");
+
+    } else {
+      reasons.push("判断が分かれる状態");
+    }
+
+    const reasonText = reasons.join("・");
+
     // グルグル終了
     loading.style.display = "none";
 
-    // 判定結果
+    // 判定結果＋理由
     if (score >= 3) {
-      result.textContent = "👉 入れてOK";
+      result.textContent = "👉 入れてOK\n（" + reasonText + "）";
       result.style.background = "#e0f0ff";
     } else if (score <= -2) {
-      result.textContent = "👉 今回は断ってOK";
+      result.textContent = "👉 今回は断ってOK\n（" + reasonText + "）";
       result.style.background = "#eee";
     } else {
-      result.textContent = "👉 保留が正解";
+      result.textContent = "👉 保留が正解\n（" + reasonText + "）";
       result.style.background = "#fff4cc";
     }
 
