@@ -134,13 +134,15 @@ function judge() {
   const result = document.getElementById("result");
 
   if (!duty || !feeling || !risk || !energy) {
-    result.textContent = "全部選んでね。";
-    return;
-  }
+  result.textContent = "全部選んでね。";
+  result.style.background = "#ffe0e0"; // 赤っぽく
+  return;
+}
 
-  // 表示リセット & グルグル開始
-  result.textContent = "";
-  loading.style.display = "block";
+  // 表示リセット
+result.textContent = "";
+result.style.background = "#eef"; 
+loading.style.display = "block";
 
   setTimeout(() => {
     let score = 0;
